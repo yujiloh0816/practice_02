@@ -75,6 +75,16 @@ RSpec.describe Book, type: :request do
       end
     end
 
-  end
+    context 'bookの削除' do
 
+      it 'bookが削除されているか' do
+        expect { delete book_path(book) }.to change(Book, :count).by(-1)
+      end
+
+      it 'リダイレクト先は正しいか' do
+        delete book_path(book)
+        expect(response).to redirect_to books_path
+      end
+    end
+  end
 end
