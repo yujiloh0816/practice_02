@@ -28,6 +28,15 @@ RSpec.describe Book, type: :request do
       end
     end
 
+    context 'bookの詳細ページへの表示内容とリンクは正しいか' do
+
+      it 'bookの詳細内容と新規登録、編集ページのリンクが表示されているか', :aggregate_failures do
+        get books_path(book)
+        expect(response.body).to include books_path
+        expect(response.body).to include edit_book_path(book)
+      end
+    end
+
   end
 
 end
