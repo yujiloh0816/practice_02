@@ -56,6 +56,25 @@ RSpec.describe Book, type: :request do
       end
     end
 
+    context 'bookの更新' do
+      let!(:book_attributes) { FactoryBot.attributes_for(:book) }
+
+      it 'bookが更新されているか' do
+        expect { put book_path(book), params: { book: book_attributes } }.to_not \
+          change(Book, :count)
+      end
+
+      it 'リダイレクト先は正しいか' do
+        put book_path(book), params: { book: book_attributes }
+        expect(response).to redirect_to book_path(book)
+      end
+
+      it 'サクセスメッセージは正しく表示されるか' do
+        put book_path(book), params: { book: book_attributes }
+        expect(flash[:notice]).to eq 'Book was successfully updated.'
+      end
+    end
+
   end
 
 end
