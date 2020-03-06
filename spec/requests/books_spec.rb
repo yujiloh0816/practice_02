@@ -37,6 +37,25 @@ RSpec.describe Book, type: :request do
       end
     end
 
+    context 'bookを投稿' do
+      let!(:book_attributes) { FactoryBot.attributes_for(:book) }
+
+      it '正しく保存できているか' do
+        expect { post books_path, params: { book: book_attributes } }.to \
+          change(Book, :count).by(1)
+      end
+
+      it 'リダイレクト先は正しいか' do
+        post books_path, params: { book: book_attributes }
+        expect(response).to redirect_to book_path(Book.last)
+      end
+
+      it 'サクセスメッセージは正しく表示されるか' do
+        post books_path, params: { book: book_attributes }
+        expect(flash[:notice]).to eq 'Book was successfully created.'
+      end
+    end
+
   end
 
 end
